@@ -45,3 +45,6 @@ Thumbs.db
 
 # Ignore any built binaries in the root directory
 /myproject
+
+.venv
+.vscode

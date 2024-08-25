@@ -1,14 +1,48 @@
 # AI Code Review Project
-### How to run the code
+Flattens your project structure into a single file and sends it to the AI for code review.
 
-To run the code, follow these steps:
+## Dependencies
 
-1. Open a terminal or command prompt.
-2. Navigate to the directory where the code is located.
-3. Run the following command:
+### Development:
+Linter:
+https://golangci-lint.run/welcome/install/
+
+(MacOS)
+```bash
+brew install golangci-lint
+```
+
+## How to run the code
 
 ```bash
 go run cmd/ai-code-review/main.go
 ```
 
-# ai-code-review
+## If you want to set up pre-commit hooks
+
+1. Setup virtual environment
+```bash
+python -m venv .venv
+```
+
+2. Activate virtual environment
+```bash
+source .venv/bin/activate
+```
+
+3. Install pre-commit
+```bash
+pip install pre-commit
+```
+
+4. Install pre-commit hooks
+```bash
+pre-commit install
+```
+
+5. Run pre-commit hooks
+```bash
+pre-commit run --all-files
+```
+
+
