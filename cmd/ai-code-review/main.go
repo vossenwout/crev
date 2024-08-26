@@ -4,68 +4,59 @@ package main
 
 import (
 	"fmt"
+	"io/fs"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-// TODO: Also add some metadata at the top of the file maybe?
-
-// getAllFilePaths recursively gets all file paths in a directory.
+// Given a path, getAllFilePaths returns all the file paths in the directory
+// and its subdirectories.
 func getAllFilePaths(path string) ([]string, error) {
 	var filePaths []string
-
-	// Walk through the directory.
-	err := filepath.Walk(path, func(path string, _ os.FileInfo, err error) error {
+	err := filepath.WalkDir(path, func(path string, _ fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		// Skip the root directory itself.
 		if path != "." {
 			filePaths = append(filePaths, path)
 		}
 		return nil
 	})
-
 	if err != nil {
 		return nil, err
 	}
 	return filePaths, nil
 }
 
-// generatePathTree constructs a tree-like structure from file paths.
+// Given a list of paths, generatePathTree returns a string representation of the
+// directory structure.
 func generatePathTree(paths []string) string {
 	var treeString strings.Builder
-	levelPrefix := make(map[int]string) // To keep track of prefix at each level
-
+	levelPrefix := make(map[int]string)
 	for i, path := range paths {
 		parts := strings.Split(path, string(os.PathSeparator))
 		level := len(parts) - 1
-
-		// Determine if this is the last item at its level.
-		isLast := i == len(paths)-1 || len(strings.Split(paths[i+1], string(os.PathSeparator))) <= level
-
-		// Build the prefix based on the level and whether it’s the last item.
+		isLast := i == len(paths)-1 ||
+			len(strings.Split(paths[i+1], string(os.PathSeparator))) <= level
 		var prefix string
 		for l := 0; l < level; l++ {
 			prefix += levelPrefix[l]
 		}
-
-		// Determine the correct branch.
 		branch := "├── "
 		if isLast {
 			branch = "└── "
-			levelPrefix[level] = "    " // No vertical line after the last item
+			levelPrefix[level] = "    "
 		} else {
-			levelPrefix[level] = "│   " // Continue the vertical line
+			levelPrefix[level] = "│   "
 		}
-
-		// Append the current file or directory to the tree string.
 		treeString.WriteString(prefix + branch + parts[len(parts)-1] + "\n")
 	}
 	return treeString.String()
 }
 
+// Given a file path, getFileContent returns the content of the file.
 func getFileContent(filePath string) (string, error) {
 	dat, err := os.ReadFile(filePath)
 	if err != nil {
@@ -74,22 +65,31 @@ func getFileContent(filePath string) (string, error) {
 	return string(dat), nil
 }
 
-func getContentMapOfFiles(filePaths []string) map[string]string {
+// Given a list of file paths, getContentMapOfFiles returns a map of file paths to their content.
+func getContentMapOfFiles(filePaths []string) (map[string]string, error) {
 	fileContentMap := make(map[string]string)
 	for _, path := range filePaths {
 		info, err := os.Stat(path)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		if !info.IsDir() {
 			fileContent, err := getFileContent(path)
 			if err != nil {
-				panic(err)
+				return nil, err
 			}
 			fileContentMap[path] = fileContent
+		} else {
+			dirEntries, err := os.ReadDir(path)
+			if err != nil {
+				return nil, err
+			}
+			if len(dirEntries) == 0 {
+				fileContentMap[path] = "empty directory"
+			}
 		}
 	}
-	return fileContentMap
+	return fileContentMap, nil
 }
 
 // TODO implement a better pattern filter
@@ -112,38 +112,57 @@ func filterFilePaths(filePaths []string, prefixesToFilter []string) []string {
 
 func createProjectString(projectTree string, fileContentMap map[string]string) string {
 	var projectString strings.Builder
-
-	projectString.WriteString(projectTree + "/n")
-
+	projectString.WriteString("Project Directory Structure:" + "\n")
+	projectString.WriteString(projectTree + "\n\n")
 	for fileName := range fileContentMap {
 		fileContent := fileContentMap[fileName]
-		projectString.WriteString(fileName + "/n")
-		projectString.WriteString(fileContent + "/n")
+		projectString.WriteString("File: " + "\n")
+		projectString.WriteString(fileName + "\n")
+		projectString.WriteString("Content: " + "\n")
+		projectString.WriteString(fileContent + "\n\n")
 	}
-
 	return projectString.String()
+}
 
+func saveStringToFile(content string, path string) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if closeErr := f.Close(); closeErr != nil {
+			if err == nil {
+				err = fmt.Errorf("failed to close file: %w", closeErr)
+			}
+			log.Printf("Error closing file: %v", closeErr)
+		}
+	}()
+	_, err = f.WriteString(content)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func main() {
-	root := "." // Replace with your root directory
-
-	// Get all file paths.
+	root := "."
 	filePaths, err := getAllFilePaths(root)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 	patternsToFilter := []string{".", "readme"}
 	filePaths = filterFilePaths(filePaths, patternsToFilter)
-
-	// Build the tree structure from file paths.
 	projectTree := generatePathTree(filePaths)
-	fmt.Println(projectTree)
-	fileContentMap := getContentMapOfFiles(filePaths)
-	//fmt.Println(fileContentMap)
-	for key := range fileContentMap {
-		fmt.Println(key)
+	fileContentMap, err := getContentMapOfFiles(filePaths)
+	if err != nil {
+		log.Fatal(err)
 	}
-	createProjectString(projectTree, fileContentMap)
+	projectString := createProjectString(projectTree, fileContentMap)
+	err = saveStringToFile(projectString, ".project.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Project structure saved to .project.txt")
+
 }

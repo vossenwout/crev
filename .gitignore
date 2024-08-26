@@ -48,3 +48,5 @@ Thumbs.db
 
 .venv
 .vscode
+
+.project.txt
