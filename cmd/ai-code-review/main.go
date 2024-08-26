@@ -124,17 +124,17 @@ func createProjectString(projectTree string, fileContentMap map[string]string) s
 	return projectString.String()
 }
 
-func saveStringToFile(content string, path string) error {
+func saveStringToFile(content string, path string) (err error) {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
+	// https://trstringer.com/golang-deferred-function-error-handling/
 	defer func() {
 		if closeErr := f.Close(); closeErr != nil {
 			if err == nil {
 				err = fmt.Errorf("failed to close file: %w", closeErr)
 			}
-			log.Printf("Error closing file: %v", closeErr)
 		}
 	}()
 	_, err = f.WriteString(content)
