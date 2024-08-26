@@ -92,7 +92,7 @@ func getContentMapOfFiles(filePaths []string) (map[string]string, error) {
 	return fileContentMap, nil
 }
 
-// TODO implement a better pattern filter
+// Filter out file paths that contain any of the prefixes in prefixesToFilter.
 func filterFilePaths(filePaths []string, prefixesToFilter []string) []string {
 	var retainedFilePaths []string
 	for _, filePath := range filePaths {
@@ -110,6 +110,7 @@ func filterFilePaths(filePaths []string, prefixesToFilter []string) []string {
 	return retainedFilePaths
 }
 
+// Creates a string representation of the project.
 func createProjectString(projectTree string, fileContentMap map[string]string) string {
 	var projectString strings.Builder
 	projectString.WriteString("Project Directory Structure:" + "\n")
@@ -124,6 +125,7 @@ func createProjectString(projectTree string, fileContentMap map[string]string) s
 	return projectString.String()
 }
 
+// Saves a string to a file.
 func saveStringToFile(content string, path string) (err error) {
 	f, err := os.Create(path)
 	if err != nil {
