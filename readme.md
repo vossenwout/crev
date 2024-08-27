@@ -18,6 +18,14 @@ brew install golangci-lint
 go run cmd/ai-code-review/main.go
 ```
 
+## How to run tests
+    
+```bash
+go test ./tests/...
+```
+   
+
+
 ## If you want to set up pre-commit hooks
 
 1. Setup virtual environment

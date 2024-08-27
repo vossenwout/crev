@@ -11,3 +11,9 @@ repos:
         entry: golangci-lint run
         language: system
         files: \.go$
+      - id: test
+        name: test
+        entry: go test -p=1 ./...
+        pass_filenames: false
+        types: [go]
+        language: system
