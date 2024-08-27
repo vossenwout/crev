@@ -11,7 +11,7 @@ import (
 // Tests the functionality to save the project string to a file.
 func TestSaveStringToFile(t *testing.T) {
 	content := "This is an example project."
-	tempFile := filepath.Join(t.TempDir(), "testfdile.txt")
+	tempFile := filepath.Join(t.TempDir(), "testfile.txt")
 
 	err := files.SaveStringToFile(content, tempFile)
 	if err != nil {
