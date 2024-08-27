@@ -13,7 +13,7 @@ repos:
         files: \.go$
       - id: test
         name: test
-        entry: go test -p=1 ./...
+        entry: go test -v -p=1 ./...
         pass_filenames: false
         types: [go]
         language: system
