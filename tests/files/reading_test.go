@@ -65,7 +65,7 @@ func TestGetContentMapOfFiles(t *testing.T) {
 		subDir2,
 	}
 
-	fileContentMap, err := files.GetContentMapOfFiles(filePaths)
+	fileContentMap, err := files.GetContentMapOfFiles(filePaths, 10)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}

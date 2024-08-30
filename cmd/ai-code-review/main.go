@@ -3,32 +3,61 @@
 package main
 
 import (
+	"flag"
 	"log"
+	"strings"
+	"time"
 
 	"github.com/vossenwout/ai-code-review/internal/files"
 	"github.com/vossenwout/ai-code-review/internal/formatting"
+	"github.com/vossenwout/ai-code-review/internal/logging"
 )
 
+func parseCommandlineArgs() (string, int, []string) {
+	// Parse command line arguments
+	patternsPtr := flag.String("ignore", ".", "Comma seperated list of perfixes of file and directory names to ingore. Ex. .,tests,readme")
+	concurrencyPtr := flag.Int("concurrency", 1000, "Maximum concurrent file reads")
+	flag.Parse()
+	if len(flag.Args()) < 1 {
+		logging.DisplayUsageAndExit()
+	}
+	root := flag.Arg(0)
+	maxConcurrency := *concurrencyPtr
+	patternsToFilter := strings.Split(*patternsPtr, ",")
+	for i, pattern := range patternsToFilter {
+		patternsToFilter[i] = strings.TrimSpace(pattern)
+	}
+	return root, maxConcurrency, patternsToFilter
+}
+
 func main() {
-	root := "."
+	start := time.Now()
+	// Parse command line arguments
+	root, maxConcurrency, patternsToFilter := parseCommandlineArgs()
+
 	filePaths, err := files.GetAllFilePaths(root)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
-	patternsToFilter := []string{".", "readme"}
-	filePaths = files.FilterFilePaths(filePaths, patternsToFilter)
 
+	filePaths = files.FilterFilePaths(filePaths, patternsToFilter)
 	projectTree := formatting.GeneratePathTree(filePaths)
-	fileContentMap, err := files.GetContentMapOfFiles(filePaths)
+	fileContentMap, err := files.GetContentMapOfFiles(filePaths, maxConcurrency)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	projectString := formatting.CreateProjectString(projectTree, fileContentMap)
 	err = files.SaveStringToFile(projectString, ".project.txt")
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Project structure saved to .project.txt")
+
+	log.Println("Project structure succesfully saved to .project.txt")
+	elapsed := time.Since(start)
+	log.Printf("Execution time: %s", elapsed)
 
 }
