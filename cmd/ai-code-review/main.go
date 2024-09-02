@@ -15,7 +15,7 @@ import (
 
 func parseCommandlineArgs() (string, int, []string) {
 	// Parse command line arguments
-	patternsPtr := flag.String("ignore", ".", "Comma seperated list of perfixes of file and directory names to ingore. Ex. .,tests,readme")
+	patternsPtr := flag.String("ignore", ".", "Comma separated list of perfixes of file and directory names to ingore. Ex. .,tests,readme")
 	concurrencyPtr := flag.Int("concurrency", 1000, "Maximum concurrent file reads")
 	flag.Parse()
 	if len(flag.Args()) < 1 {
@@ -32,7 +32,6 @@ func parseCommandlineArgs() (string, int, []string) {
 
 func main() {
 	start := time.Now()
-	// Parse command line arguments
 	root, maxConcurrency, patternsToFilter := parseCommandlineArgs()
 
 	filePaths, err := files.GetAllFilePaths(root)
@@ -56,8 +55,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println("Project structure succesfully saved to .project.txt")
+	log.Println("Project structure successfully saved to .project.txt")
 	elapsed := time.Since(start)
 	log.Printf("Execution time: %s", elapsed)
-
 }
