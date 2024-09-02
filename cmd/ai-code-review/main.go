@@ -33,7 +33,7 @@ func parseCommandlineArgs() (string, int, []string) {
 func main() {
 	start := time.Now()
 	root, maxConcurrency, patternsToFilter := parseCommandlineArgs()
-
+	//dummy change
 	filePaths, err := files.GetAllFilePaths(root)
 	if err != nil {
 		log.Fatal(err)
