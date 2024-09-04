@@ -5,57 +5,62 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
 // Given a root path returns all the file paths in the root directory
 // and its subdirectories.
-func GetAllFilePaths(root string) ([]string, error) {
+func GetAllFilePaths(root string, prefixesToFilter []string, extensionsToKeep []string) ([]string, error) {
 	var filePaths []string
-	err := filepath.WalkDir(root, func(path string, _ fs.DirEntry, err error) error {
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if path != root {
+		// Skip the root directory.
+		if path == root {
+			return nil
+		}
+		// First filter out the paths that contain any of the prefixes in prefixesToFilter.
+		for _, prefixToFilter := range prefixesToFilter {
+			// check if the full path itself contains the prefix
+			if strings.HasPrefix(path, prefixToFilter) {
+				return nil
+			}
+			// check if any of the components of the path contain the prefix
+			components := strings.Split(filepath.Clean(path), string(filepath.Separator))
+			for _, component := range components {
+				if strings.HasPrefix(component, prefixToFilter) {
+					return nil
+				}
+			}
+		}
+
+		// if no specific extensions to include are provided, include all files
+		if len(extensionsToKeep) == 0 {
 			filePaths = append(filePaths, path)
+		} else {
+			// if path is a directory, include it
+			if d.IsDir() {
+				filePaths = append(filePaths, path)
+			} else {
+				// else, only include files with the specified extensions
+				for _, extensionToKeep := range extensionsToKeep {
+					if filepath.Ext(path) == extensionToKeep {
+						filePaths = append(filePaths, path)
+						break
+					}
+				}
+			}
 		}
 		return nil
 	})
 	if err != nil {
 		return nil, err
 	}
+
 	return filePaths, nil
 }
-
-/**
-
-// Given a list of file paths, getContentMapOfFiles returns a map of file paths to their content.
-func GetContentMapOfFiles(filePaths []string) (map[string]string, error) {
-	fileContentMap := make(map[string]string)
-	for _, path := range filePaths {
-		info, err := os.Stat(path)
-		if err != nil {
-			return nil, err
-		}
-		if !info.IsDir() {
-			fileContent, err := getFileContent(path)
-			if err != nil {
-				return nil, err
-			}
-			fileContentMap[path] = fileContent
-		} else {
-			dirEntries, err := os.ReadDir(path)
-			if err != nil {
-				return nil, err
-			}
-			if len(dirEntries) == 0 {
-				fileContentMap[path] = "empty directory"
-			}
-		}
-	}
-	return fileContentMap, nil
-}
-*/
 
 // Given a file path, getFileContent returns the content of the file.
 func getFileContent(filePath string) (string, error) {

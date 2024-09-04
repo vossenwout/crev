@@ -21,7 +21,7 @@ go run cmd/ai-code-review/main.go
 ## How to run tests
     
 ```bash
-go test ./tests/...
+go test ./tests/... -count=1
 ```
    
 
