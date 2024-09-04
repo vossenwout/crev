@@ -55,7 +55,7 @@ func TestGetAllFilePaths(t *testing.T) {
 	}
 }
 
-// tests the prefix filtering functionality.
+// tests the prefix filtering functionality with a full path prefix.
 func TestGetAllFilePathsWithPrefixFilter(t *testing.T) {
 	rootDir := t.TempDir()
 
@@ -87,7 +87,7 @@ func TestGetAllFilePathsWithPrefixFilter(t *testing.T) {
 		subDir2,
 		filepath.Join(subDir2, "file3.go"),
 	}
-
+	// filter out full path prefix subDir1
 	filePaths, err := files.GetAllFilePaths(rootDir, []string{subDir1}, nil)
 
 	if err != nil {
@@ -112,7 +112,7 @@ func TestGetAllFilePathsWithPrefixFilter(t *testing.T) {
 	}
 }
 
-// tests the prefix filtering functionality.
+// tests the prefix filtering functionality when the prefix is a nested directory.
 func TestGetAllFilePathsWithPrefixFilterNestedDir(t *testing.T) {
 	rootDir := t.TempDir()
 
