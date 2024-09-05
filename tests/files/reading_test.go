@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/vossenwout/ai-code-review/internal/files"
+	"github.com/vossenwout/crev/internal/files"
 )
 
 // Tests the functionality to get all file paths starting from a root path.

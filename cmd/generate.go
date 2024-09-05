@@ -8,13 +8,10 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/vossenwout/ai-code-review/internal/files"
-	"github.com/vossenwout/ai-code-review/internal/formatting"
+	"github.com/spf13/viper"
+	"github.com/vossenwout/crev/internal/files"
+	"github.com/vossenwout/crev/internal/formatting"
 )
-
-var ignoreDirs []string
-var extensionsToKeep []string
-var maxConcurrency int
 
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
@@ -23,7 +20,7 @@ var generateCmd = &cobra.Command{
 	Long: `Generates a textual representation of your code.
 
 Example usage:
-ai-code-review generate --path /path/to/code
+crev generate --path /path/to/code
 `,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -32,7 +29,11 @@ ai-code-review generate --path /path/to/code
 
 		// get all file paths from the root directory
 		rootDir := "."
-		filePaths, err := files.GetAllFilePaths(rootDir, ignoreDirs, extensionsToKeep)
+		prefixesToFilter := viper.GetStringSlice("ignore")
+		// always ignore directories starting with "."
+		prefixesToFilter = append(prefixesToFilter, ".")
+		extensionsToKeep := viper.GetStringSlice("extensions")
+		filePaths, err := files.GetAllFilePaths(rootDir, prefixesToFilter, extensionsToKeep)
 		if err != nil {
 			log.Fatal(err)
 			return
@@ -41,6 +42,7 @@ ai-code-review generate --path /path/to/code
 		// generate the project tree
 		projectTree := formatting.GeneratePathTree(filePaths)
 
+		maxConcurrency := 100
 		// get the content of all files
 		fileContentMap, err := files.GetContentMapOfFiles(filePaths, maxConcurrency)
 		if err != nil {
@@ -50,14 +52,15 @@ ai-code-review generate --path /path/to/code
 		// create the project string
 		projectString := formatting.CreateProjectString(projectTree, fileContentMap)
 
+		output_file := ".crev-project-overview.txt"
 		// save the project string to a file
-		err = files.SaveStringToFile(projectString, ".project.txt")
+		err = files.SaveStringToFile(projectString, output_file)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		// log success
-		log.Println("Project structure successfully saved to .project.txt")
+		log.Println("Project structure successfully saved to " + output_file)
 		elapsed := time.Since(start)
 		log.Printf("Execution time: %s", elapsed)
 
@@ -66,7 +69,8 @@ ai-code-review generate --path /path/to/code
 
 func init() {
 	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringSliceVar(&ignoreDirs, "ignore", []string{"."}, "Comma seperated prefixes of paths to ignore")
-	generateCmd.Flags().StringSliceVar(&extensionsToKeep, "extensions", []string{}, "Comma seperated file extensions to keep. (default: all files)")
-	generateCmd.Flags().IntVar(&maxConcurrency, "max-concurrency", 1000, "Maximum number of concurrent file reads")
+	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma seperated prefixes of paths to ignore")
+	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma seperated file extensions to keep. (default: all files)")
+	viper.BindPFlag("ignore", generateCmd.Flags().Lookup("ignore"))
+	viper.BindPFlag("extensions", generateCmd.Flags().Lookup("extensions"))
 }

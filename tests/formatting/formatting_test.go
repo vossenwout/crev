@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/vossenwout/ai-code-review/internal/formatting"
+	"github.com/vossenwout/crev/internal/formatting"
 )
 
 func TestGeneratePathTree(t *testing.T) {
