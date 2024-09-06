@@ -1,5 +1,3 @@
-// Description: This file contains the generate command which generates
-// a textual representation of the project structure.
 package cmd
 
 import (
@@ -24,7 +22,7 @@ crev generate
 crev generate --ignore=tests,readme.md --extensions=go,py,js
 `,
 	Args: cobra.NoArgs,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		// start timer
 		start := time.Now()
 
@@ -53,15 +51,15 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 		// create the project string
 		projectString := formatting.CreateProjectString(projectTree, fileContentMap)
 
-		output_file := ".crev-project-overview.txt"
+		outputFile := ".crev-project-overview.txt"
 		// save the project string to a file
-		err = files.SaveStringToFile(projectString, output_file)
+		err = files.SaveStringToFile(projectString, outputFile)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		// log success
-		log.Println("Project structure successfully saved to " + output_file)
+		log.Println("Project structure successfully saved to " + outputFile)
 		elapsed := time.Since(start)
 		log.Printf("Execution time: %s", elapsed)
 
@@ -70,8 +68,14 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 
 func init() {
 	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma seperated prefixes of paths to ignore")
-	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma seperated file extensions to include. (default: all files)")
-	viper.BindPFlag("ignore", generateCmd.Flags().Lookup("ignore"))
-	viper.BindPFlag("extensions", generateCmd.Flags().Lookup("extensions"))
+	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma separated prefixes of paths to ignore")
+	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma separated file extensions to include. (default: all files)")
+	err := viper.BindPFlag("ignore", generateCmd.Flags().Lookup("ignore"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = viper.BindPFlag("extensions", generateCmd.Flags().Lookup("extensions"))
+	if err != nil {
+		log.Fatal(err)
+	}
 }

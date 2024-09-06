@@ -1,19 +1,15 @@
-// Description: This file contains the implementation of the init command which is used to create
-// a default configuration file for the crev tool.
 package cmd
 
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 // Define a default template configuration
-var defaultConfig = []byte(`
-# Configuration for the crev tool
+var defaultConfig = []byte(`# Configuration for the crev tool
 # specify your Code AI Review API key (necessary for review command)
 api-key: "TODO"
 # specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
@@ -35,43 +31,24 @@ The configuration file includes:
 
 You can modify this file as needed to suit your project's structure.
 `,
-	Run: func(cmd *cobra.Command, args []string) {
-		// Set the filename for the config
+	Run: func(_ *cobra.Command, _ []string) {
 		configFileName := ".crev-config.yaml"
 
-		// Get the current directory
-		currentDir, err := os.Getwd()
+		// Check if the config file already exists
+		if viper.ConfigFileUsed() != "" {
+			fmt.Println("Config file already exists at", viper.ConfigFileUsed())
+			os.Exit(1)
+		}
+
+		// Write the default config using Viper
+		err := os.WriteFile(configFileName, defaultConfig, 0644)
 		if err != nil {
-			fmt.Println("Unable to get current directory")
+			fmt.Println("Unable to write config file:", err)
 			os.Exit(1)
 		}
 
-		// Define the full path for the config file
-		configFilePath := filepath.Join(currentDir, configFileName)
-
-		// Check if config file already exists
-		if _, err := os.Stat(configFilePath); err == nil {
-			fmt.Println("Config file already exists at", configFilePath)
-			os.Exit(1)
-		}
-
-		// Write the default config to the file
-		err = os.WriteFile(configFilePath, defaultConfig, 0644)
-		if err != nil {
-			fmt.Println("Unable to write config file")
-			os.Exit(1)
-		}
-
-		// Load the config using Viper
-		viper.SetConfigFile(configFilePath)
-		viper.SetConfigType("yaml")
-
-		if err := viper.ReadInConfig(); err != nil {
-			fmt.Println("Unable to read config file")
-			os.Exit(1)
-		}
-
-		fmt.Println("Config file created at", configFilePath)
+		// Inform the user
+		fmt.Println("Config file created at", configFileName)
 	},
 }
 
