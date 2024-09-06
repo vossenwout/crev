@@ -23,34 +23,22 @@ func GetAllFilePaths(root string, prefixesToFilter []string, extensionsToKeep []
 		}
 		// First filter out the paths that contain any of the prefixes in prefixesToFilter.
 		for _, prefixToFilter := range prefixesToFilter {
-			// check if the full path itself contains the prefix
-			if strings.HasPrefix(path, prefixToFilter) {
+			if strings.HasPrefix(filepath.Base(path), prefixToFilter) {
+				if d.IsDir() {
+					return filepath.SkipDir
+				}
 				return nil
 			}
-			// check if any of the components of the path contain the prefix
-			components := strings.Split(filepath.Clean(path), string(filepath.Separator))
-			for _, component := range components {
-				if strings.HasPrefix(component, prefixToFilter) {
-					return nil
-				}
-			}
 		}
-
-		// if no specific extensions to include are provided, include all files
-		if len(extensionsToKeep) == 0 {
+		// Process file based on extension filters.
+		if d.IsDir() || len(extensionsToKeep) == 0 {
 			filePaths = append(filePaths, path)
-		} else {
-			// if path is a directory, include it
-			if d.IsDir() {
+			return nil
+		}
+		for _, ext := range extensionsToKeep {
+			if filepath.Ext(path) == ext {
 				filePaths = append(filePaths, path)
-			} else {
-				// else, only include files with the specified extensions
-				for _, extensionToKeep := range extensionsToKeep {
-					if filepath.Ext(path) == extensionToKeep {
-						filePaths = append(filePaths, path)
-						break
-					}
-				}
+				break
 			}
 		}
 		return nil

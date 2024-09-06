@@ -1,6 +1,4 @@
-/*
-Copyright © 2024 Wout Vossen <vossen.w@hotmail.com>
-*/
+// Description: This file contains the root command for the CLI tool.
 package cmd
 
 import (
@@ -15,14 +13,10 @@ var Region string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "crev",
-	Short: "Allows you to review your code with AI",
+	Short: "Initialize",
 	Long: `Allows you to generate a textual representation of 
 your code and let it be reviewed by an AI.
-
-Example:
-crev generate --path /path/to/code
-crev review .
-	`,
+`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 Wout Vossen <vossen.w@hotmail.com>
-*/
+// Description: This file contains the generate command which generates
+// a textual representation of the project structure.
 package cmd
 
 import (
@@ -17,10 +16,12 @@ import (
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate a textual representation of your code",
-	Long: `Generates a textual representation of your code.
+	Long: `Generates a textual representation of your code starting from the directory you execute
+	this command in. By default files starting with "." are ignored.
 
 Example usage:
-crev generate --path /path/to/code
+crev generate
+crev generate --ignore=tests,readme.md --extensions=go,py,js
 `,
 	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -70,7 +71,7 @@ crev generate --path /path/to/code
 func init() {
 	rootCmd.AddCommand(generateCmd)
 	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma seperated prefixes of paths to ignore")
-	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma seperated file extensions to keep. (default: all files)")
+	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma seperated file extensions to include. (default: all files)")
 	viper.BindPFlag("ignore", generateCmd.Flags().Lookup("ignore"))
 	viper.BindPFlag("extensions", generateCmd.Flags().Lookup("extensions"))
 }

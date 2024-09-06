@@ -2,7 +2,7 @@
 # Configuration for the code review (crev) tool
 # specify your Code AI Review API key (necessary for review command)
 api-key: "TODO"
-# specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
+# specify the prefixes of files and directories to ignore (files/dirs starting with . are always ignored)
 ignore: [tests, build, go.mod, go.sum, IGNORE, readme.md, LICENSE]
-# specify the extensions of files to include
+# specify the extensions of files to include (by default all files are included)
 extensions: # ex. [.go, .py, .js]

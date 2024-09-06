@@ -1,6 +1,5 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
+// Description: This file contains the implementation of the init command which is used to create
+// a default configuration file for the crev tool.
 package cmd
 
 import (
@@ -19,20 +18,23 @@ var defaultConfig = []byte(`
 api-key: "TODO"
 # specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
 ignore: # ex. [tests, build, readme.md]
-# specify the extensions of files to include
+# specify the extensions of files to include (by default all files are included)
 extensions: # ex. [.go, .py, .js]
 `)
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Initialize a default configuration file",
+	Long: `Generates a default configuration file (.crev-config.yaml) in the current directory.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+The configuration file includes:
+- API key for accessing the Code AI Review service (required for the "review" command)
+- File and directory ignore patterns when generating the project overview
+- File extensions to include when generating the project overview
+
+You can modify this file as needed to suit your project's structure.
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Set the filename for the config
 		configFileName := ".crev-config.yaml"
