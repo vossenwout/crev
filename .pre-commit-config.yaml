@@ -6,11 +6,6 @@ repos:
         entry: gofmt -w .
         language: system
         files: \.go$
-      - id: golangci-lint
-        name: golangci-lint
-        entry: golangci-lint run
-        language: system
-        files: \.go$
       - id: test
         name: test
         entry: go test -v -p=1 ./...

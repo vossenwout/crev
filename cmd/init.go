@@ -19,7 +19,6 @@ ignore: # ex. [tests, build, readme.md]
 extensions: # ex. [.go, .py, .js]
 `)
 
-// initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize a default configuration file",
