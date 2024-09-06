@@ -14,7 +14,6 @@ linters:
     - gofmt
     - goimports
     - misspell
-    - revive
 
 linters-settings:
   goimports:

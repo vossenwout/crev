@@ -12,7 +12,7 @@ import (
 // Define a default template configuration
 var defaultConfig = []byte(`# Configuration for the crev tool
 # specify your Code AI Review API key (necessary for review command)
-api-key: "TODO"
+api-key: # Fill in your CREV API key here
 # specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
 ignore: # ex. [tests, build, readme.md]
 # specify the extensions of files to include (by default all files are included)
@@ -31,7 +31,7 @@ The configuration file includes:
 
 You can modify this file as needed to suit your project's structure.
 `,
-	Run: func(_ *cobra.Command, _ []string) {
+	Run: func(cmd *cobra.Command, args []string) {
 		configFileName := ".crev-config.yaml"
 
 		// Check if the config file already exists
