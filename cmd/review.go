@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/vossenwout/crev/internal/review"
 )
 
 // reviewCmd represents the review command
@@ -22,12 +23,11 @@ to quickly create a Cobra application.`,
 		if apiKey := viper.GetString("api-key"); apiKey == "" {
 			log.Fatal(`API key is required for this command. Set the API key under the 'api-key' key in your .crev-config.yaml or provide it as a flag --api-key.`)
 		}
-		log.Println("Reviewing code...")
 		dat, err := os.ReadFile(".crev-project-overview.txt")
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Print(string(dat))
+		review.Review(string(dat))
 	},
 }
 
