@@ -1,3 +1,4 @@
+// Description: This file contains the generate command which generates a textual representation of the project structure.
 package cmd
 
 import (
@@ -68,8 +69,8 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 
 func init() {
 	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma separated prefixes of paths to ignore")
-	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma separated file extensions to include. (default: all files)")
+	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma-separated prefixes of paths to ignore")
+	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma-separated file extensions to include. (default: all files)")
 	err := viper.BindPFlag("ignore", generateCmd.Flags().Lookup("ignore"))
 	if err != nil {
 		log.Fatal(err)

@@ -50,7 +50,7 @@ func GetAllFilePaths(root string, prefixesToFilter []string, extensionsToKeep []
 	return filePaths, nil
 }
 
-// Given a file path, getFileContent returns the content of the file.
+// Given a file path, GetFileContent returns the content of the file.
 func getFileContent(filePath string) (string, error) {
 	dat, err := os.ReadFile(filePath)
 	if err != nil {
@@ -59,7 +59,7 @@ func getFileContent(filePath string) (string, error) {
 	return string(dat), nil
 }
 
-// Given a list of file paths, getContentMapOfFiles returns a map of file paths to their content.
+// Given a list of file paths, GetContentMapOfFiles returns a map of file paths to their content.
 func GetContentMapOfFiles(filePaths []string, maxConcurrency int) (map[string]string, error) {
 	var fileContentMap sync.Map
 	var wg sync.WaitGroup

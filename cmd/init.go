@@ -1,3 +1,4 @@
+// Description: This file implements the "init" command, which generates a default configuration file in the current directory.
 package cmd
 
 import (
@@ -48,7 +49,7 @@ You can modify this file as needed to suit your project's structure.
 		}
 
 		// Inform the user
-		fmt.Println("Config file created at", configFileName)
+		fmt.Println("Config file created at:", configFileName)
 	},
 }
 
