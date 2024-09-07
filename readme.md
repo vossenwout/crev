@@ -28,42 +28,9 @@ brew install golangci-lint
 golangci-lint run
 ```
 
-
-## If you want to set up pre-commit hooks
-
-1. Setup virtual environment
-```bash
-python -m venv .venv
-```
-
-2. Activate virtual environment
-```bash
-source .venv/bin/activate
-```
-
-3. Install pre-commit
-```bash
-pip install pre-commit
-```
-
-4. Install pre-commit hooks
-```bash
-pre-commit install
-```
-
-5. Run pre-commit hooks
-```bash
-pre-commit run --all-files
-```
-
 ## Releasing
-1. Create a new tag
+Push a new tag to the repository.
 ```bash
 git tag v0.0.1
 git push origin v0.0.1
-```
-
-2. Use goreleaser to create a new release
-```bash
-goreleaser release --clean
 ```
