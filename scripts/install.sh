@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define version and binary URL
-VERSION="0.1.0"
-BASE_URL="https://github.com/vossenwout/crev/releases/download/v$VERSION"
+VERSION=$(curl --silent "https://api.github.com/repos/vossenwout/crev/releases/latest" | grep '"tag_name":' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
+BASE_URL="https://github.com/vossenwout/crev/releases/download/$VERSION"
 
 # Detect OS and architecture
 OS=$(uname -s)
@@ -41,7 +41,7 @@ echo file: $BASE_URL/$FILE
 
 # Download and install binary
 echo "Downloading $FILE..."
-curl -o crev.tar.gz $BASE_URL/$FILE
+curl -L -o crev.tar.gz $BASE_URL/$FILE
 
 # Extract the downloaded file
 echo "Extracting..."
