@@ -26,9 +26,8 @@ builds:
       - darwin
 
 archives:
-  - files:
-      - none*
-  - format: tar.gz
+  - id: binaries
+    format: tar.gz
     # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: >-
       {{ .ProjectName }}_
@@ -41,4 +40,7 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
+    files:
+      - none*
+
 
