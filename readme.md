@@ -1,17 +1,9 @@
-# AI Code Review Project
-Flattens your project structure into a single file and sends it to the AI for code review.
+# CREV (Code REView AI)
+CLI tool to review code using AI.
 
 ## Dependencies
 
 ### Development:
-Linter:
-https://golangci-lint.run/welcome/install/
-
-(MacOS)
-```bash
-brew install golangci-lint
-```
-
 ## How to run the code
 
 ```bash
@@ -21,9 +13,20 @@ go run cmd/ai-code-review/main.go
 ## How to run tests
     
 ```bash
-go test ./tests/...
+go test ./tests/... -count=1
 ```
-   
+
+## How to lint the code
+Linter:
+https://golangci-lint.run/welcome/install/
+
+(MacOS)
+```bash
+brew install golangci-lint
+```
+```bash
+golangci-lint run
+```
 
 
 ## If you want to set up pre-commit hooks
