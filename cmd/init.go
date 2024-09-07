@@ -14,7 +14,7 @@ var defaultConfig = []byte(`# Configuration for the crev tool
 # specify your Code AI Review API key (necessary for review command)
 api-key: # Fill in your CREV API key here
 # specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
-ignore: # ex. [tests, build, readme.md]
+ignore: # ex. [tests, build, dist, readme.md]
 # specify the extensions of files to include (by default all files are included)
 extensions: # ex. [.go, .py, .js]
 `)
@@ -36,14 +36,14 @@ You can modify this file as needed to suit your project's structure.
 
 		// Check if the config file already exists
 		if viper.ConfigFileUsed() != "" {
-			fmt.Println("Config file already exists at", viper.ConfigFileUsed())
+			fmt.Println("Config file already exists at ", viper.ConfigFileUsed())
 			os.Exit(1)
 		}
 
 		// Write the default config using Viper
 		err := os.WriteFile(configFileName, defaultConfig, 0644)
 		if err != nil {
-			fmt.Println("Unable to write config file:", err)
+			fmt.Println("Unable to write config file: ", err)
 			os.Exit(1)
 		}
 
