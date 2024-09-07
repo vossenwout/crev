@@ -58,3 +58,5 @@ go.sum
 
 .crev-project-overview.txt
 dist/
+
+scripts/install_private.sh

@@ -26,6 +26,8 @@ builds:
       - darwin
 
 archives:
+  - files:
+      - none*
   - format: tar.gz
     # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: >-
@@ -40,9 +42,3 @@ archives:
       - goos: windows
         format: zip
 
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
