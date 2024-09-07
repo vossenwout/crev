@@ -55,3 +55,15 @@ pre-commit install
 ```bash
 pre-commit run --all-files
 ```
+
+## Releasing
+1. Create a new tag
+```bash
+git tag v0.0.1
+git push origin v0.0.1
+```
+
+2. Use goreleaser to create a new release
+```bash
+goreleaser release --clean
+```
