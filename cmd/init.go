@@ -36,14 +36,14 @@ You can modify this file as needed to suit your project's structure.
 
 		// Check if the config file already exists
 		if viper.ConfigFileUsed() != "" {
-			fmt.Println("Config file already exists at", viper.ConfigFileUsed())
+			fmt.Println("Config file already exists at ", viper.ConfigFileUsed())
 			os.Exit(1)
 		}
 
 		// Write the default config using Viper
 		err := os.WriteFile(configFileName, defaultConfig, 0644)
 		if err != nil {
-			fmt.Println("Unable to write config file:", err)
+			fmt.Println("Unable to write config file: ", err)
 			os.Exit(1)
 		}
 
