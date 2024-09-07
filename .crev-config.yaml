@@ -2,6 +2,6 @@
 # specify your Code AI Review API key (necessary for review command)
 api-key: # "TODO"
 # specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
-ignore: [tests, build, readme.md, LICENSE]
+ignore: [tests, build, readme.md, LICENSE, dist]
 # specify the extensions of files to include (by default all files are included)
 extensions: # ex. [.go, .py, .js]

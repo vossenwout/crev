@@ -57,3 +57,4 @@ LICENSE
 go.sum
 
 .crev-project-overview.txt
+dist/
