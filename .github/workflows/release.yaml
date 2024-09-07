@@ -19,6 +19,7 @@ jobs:
         with:
           go-version: stable
       - run: go mod tidy
+      - run: gofmt -l .
       - run: go test ./...
 
   goreleaser:
