@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Define version and binary URL
+# Fetch the latest version
 VERSION=$(curl --silent "https://api.github.com/repos/vossenwout/crev/releases/latest" | grep '"tag_name":' | sed -E 's/.*"tag_name": *"([^"]+)".*/\1/')
 BASE_URL="https://github.com/vossenwout/crev/releases/download/$VERSION"
 

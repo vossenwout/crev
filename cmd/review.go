@@ -33,7 +33,7 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(reviewCmd)
-	reviewCmd.Flags().String("api-key", "", "Your Code AI Review API key")
+	reviewCmd.Flags().String("api-key", "", "Your Code AI Review API key ")
 	err := viper.BindPFlag("api-key", reviewCmd.Flags().Lookup("api-key"))
 	if err != nil {
 		log.Fatal(err)
