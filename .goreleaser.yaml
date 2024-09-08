@@ -13,6 +13,8 @@ builds:
       - linux
       - windows
       - darwin
+    ldflags:
+      - -s -w -X github.com/vossenwout/crev/cmd.Version={{.Version}}
 
 archives:
   - id: binaries
@@ -31,5 +33,32 @@ archives:
         format: zip
     files:
       - none*
+
+brews:
+  - name: crev
+    commit_author:
+      name: vossenwout
+      email: vossen.w@hotmail.com
+    homepage: "https://github.com/vossenwout/crev"
+    description: "CLI tool for AI code reviews"
+    # Where the tap will be hosted.
+    repository:
+      owner: vossenwout
+      name: homebrew-crev
+
+scoops:
+  - name: crev
+    commit_author:
+      name: vossenwout
+      email: vossen.w@hotmail.com
+    homepage: "https://github.com/vossenwout/crev"
+    description: "CLI tool for AI code reviews"
+    # Where the scoop will be hosted
+    repository:
+      owner: vossenwout
+      name: scoop-crev
+
+changelog:
+  disable: true
 
 

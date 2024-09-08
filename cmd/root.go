@@ -8,10 +8,13 @@ import (
 	"github.com/spf13/viper"
 )
 
+var Version = "dev"
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "crev",
-	Short: "Initialize",
+	Use:     "crev",
+	Version: Version,
+	Short:   "Initialize",
 	Long: `Allows you to generate a textual representation of 
 your code and let it be reviewed by an AI.
 `,

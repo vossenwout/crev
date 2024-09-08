@@ -19,6 +19,7 @@ jobs:
         with:
           go-version: stable
       - run: go mod tidy
+      - run: gofmt -l .
       - run: go test ./...
 
   goreleaser:
@@ -38,4 +39,4 @@ jobs:
           version: "~> v2"
           args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_ACTION }}
