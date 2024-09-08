@@ -8,7 +8,7 @@ sudo curl -L https://raw.githubusercontent.com/vossenwout/crev/feature/add-insta
 ```
 windows
 ```bash
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/vossenwout/crev/main/install.ps1 -OutFile install.ps1
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.ps1 -OutFile install.ps1
 ```
 
 ## Releasing
