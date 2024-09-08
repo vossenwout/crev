@@ -6,7 +6,7 @@ CLI tool to review code using AI.
 ```bash
 sudo curl -L https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.sh | bash
 ```
-windows
+windows (Run as Administrator in powershell)
 ```bash
 Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.ps1' -OutFile "$env:TEMP\install_crev.ps1"
 & "$env:TEMP\install_crev.ps1"
