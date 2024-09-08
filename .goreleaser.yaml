@@ -35,6 +35,6 @@ archives:
       - none*
 
 changelog:
-  disable: "{{ .Env.CREATE_CHANGELOG }}"
+  disable: true
 
 
