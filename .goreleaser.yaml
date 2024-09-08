@@ -34,6 +34,18 @@ archives:
     files:
       - none*
 
+brews:
+  - name: crev
+    commit_author:
+      name: vossenwout
+      email: vossen.w@hotmail.com
+    homepage: "https://github.com/vossenwout/crev"
+    description": "CLI tool for AI code reviews"
+    # Where the tap will be hosted.
+    repository:
+      owner: vossenwout
+      name: homebrew-crev
+
 changelog:
   disable: true
 
