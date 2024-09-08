@@ -6,6 +6,10 @@ CLI tool to review code using AI.
 ```bash
 sudo curl -L https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.sh | bash
 ```
+windows
+```bash
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/vossenwout/crev/main/install.ps1 -OutFile install.ps1
+```
 
 ## Releasing
 Push a new tag to the repository.
