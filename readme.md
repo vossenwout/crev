@@ -8,8 +8,7 @@ sudo curl -L https://raw.githubusercontent.com/vossenwout/crev/feature/add-insta
 ```
 windows (Run as Administrator in powershell)
 ```bash
-Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.ps1' -OutFile "$env:TEMP\install_crev.ps1"
-& "$env:TEMP\install_crev.ps1"
+Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.ps1').Content
 ```
 
 ## Releasing
