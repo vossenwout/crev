@@ -5,7 +5,7 @@ try {
     $VERSION = $response.tag_name
 } catch {
     Write-Host "Error: Failed to fetch the latest version."
-    exit 1
+    return
 }
 
 $BASE_URL = "https://github.com/vossenwout/crev/releases/download/$VERSION"
@@ -34,7 +34,7 @@ try {
     Write-Host "Download completed."
 } catch {
     Write-Host "Error: Failed to download $FILE."
-    exit 1
+    return
 }
 
 Write-Host "Extracting $destination..."
@@ -43,7 +43,7 @@ try {
     Write-Host "Extraction completed."
 } catch {
     Write-Host "Error: Failed to extract $destination."
-    exit 1
+    return
 }
 
 # Move the binary to a directory in the PATH (C:\Program Files by default)
@@ -53,7 +53,7 @@ if (!(Test-Path -Path $installPath)) {
         New-Item -ItemType Directory -Path $installPath
     } catch {
         Write-Host "Error: Failed to create installation directory at $installPath."
-        exit 1
+        return
     }
 }
 
@@ -62,7 +62,7 @@ try {
     Write-Host "crev.exe moved to $installPath."
 } catch {
     Write-Host "Error: Failed to move crev.exe to $installPath."
-    exit 1
+    return
 }
 
 # Optionally add to PATH if not already
@@ -72,7 +72,7 @@ if (-not ([Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVaria
         Write-Host "crev path added to system PATH. You may need to restart your terminal."
     } catch {
         Write-Host "Error: Failed to update system PATH."
-        exit 1
+        return
     }
 }
 
