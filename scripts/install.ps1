@@ -61,7 +61,7 @@ try {
     Move-Item "$env:TEMP\crev\crev.exe" "$installPath\crev.exe" -Force
     Write-Host "crev.exe moved to $installPath."
 } catch {
-    Write-Host "Error: Failed to move crev.exe to $installPath."
+    Write-Host "Error: Failed to move crev.exe to $installPath. Are you running this script as an administrator?"
     return
 }
 
@@ -71,7 +71,7 @@ if (-not ([Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVaria
         [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine) + ";$installPath", [System.EnvironmentVariableTarget]::Machine)
         Write-Host "crev path added to system PATH. You may need to restart your terminal."
     } catch {
-        Write-Host "Error: Failed to update system PATH."
+        Write-Host "Error: Failed to update system PATH. Are you running this script as an administrator?"
         return
     }
 }
