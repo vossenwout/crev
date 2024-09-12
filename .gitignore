@@ -60,3 +60,5 @@ go.sum
 dist/
 
 scripts/install_private.sh
+
+crev*

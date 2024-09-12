@@ -11,6 +11,53 @@ import (
 	"github.com/vossenwout/crev/internal/formatting"
 )
 
+var standardPrefixesToFilter = []string{
+	// ignore .git, .idea, .vscode, etc.
+	".",
+	// ignore crev specific files
+	"crev",
+	// ignore go.mod, go.sum, etc.
+	"go",
+	"license",
+	// poetry
+	"pyproject.toml",
+	"poetry.lock",
+	"venv",
+	// output files
+	"build",
+	"dist",
+	"out",
+	"target",
+	"bin",
+	// javascript
+	"node_modules",
+	"coverage",
+	"public",
+	"static",
+	"Thumbs.db",
+	"package",
+	"yarn.lock",
+	"package",
+	"tsconfig",
+	// next.js
+	"next.config",
+	"next-env",
+	// python
+	"__pycache__",
+	"logs",
+	// java
+	"gradle",
+	// c++
+	"CMakeLists",
+	// ruby
+	"vendor",
+	"Gemfile",
+	// php
+	"composer",
+	// rust
+	"target",
+}
+
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
 	Use:   "generate",
@@ -31,7 +78,7 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 		rootDir := "."
 		prefixesToFilter := viper.GetStringSlice("ignore")
 		// always ignore directories starting with "."
-		prefixesToFilter = append(prefixesToFilter, ".")
+		prefixesToFilter = append(prefixesToFilter, standardPrefixesToFilter...)
 		extensionsToKeep := viper.GetStringSlice("extensions")
 		filePaths, err := files.GetAllFilePaths(rootDir, prefixesToFilter, extensionsToKeep)
 		if err != nil {
@@ -52,7 +99,7 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 		// create the project string
 		projectString := formatting.CreateProjectString(projectTree, fileContentMap)
 
-		outputFile := ".crev-project-overview.txt"
+		outputFile := "crev-project.txt"
 		// save the project string to a file
 		err = files.SaveStringToFile(projectString, outputFile)
 		if err != nil {
@@ -60,7 +107,12 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 		}
 
 		// log success
-		log.Println("Project structure successfully saved to " + outputFile)
+		log.Println("Project overview succesfully saved to: " + outputFile)
+
+		// estimate number of tokens
+		log.Printf("Estimated token count: %d - %d tokens",
+			len(projectString)/4, len(projectString)/3)
+
 		elapsed := time.Since(start)
 		log.Printf("Execution time: %s", elapsed)
 

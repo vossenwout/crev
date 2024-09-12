@@ -20,14 +20,15 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if apiKey := viper.GetString("api-key"); apiKey == "" {
+		apiKey := viper.GetString("api-key")
+		if apiKey == "" {
 			log.Fatal(`API key is required for this command. Set the API key under the 'api-key' key in your .crev-config.yaml or provide it as a flag --api-key.`)
 		}
 		dat, err := os.ReadFile(".crev-project-overview.txt")
 		if err != nil {
 			log.Fatal(err)
 		}
-		review.Review(string(dat))
+		review.Review(string(dat), apiKey)
 	},
 }
 

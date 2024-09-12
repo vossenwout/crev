@@ -13,8 +13,8 @@ import (
 var defaultConfig = []byte(`# Configuration for the crev tool
 # specify your Code AI Review API key (necessary for review command)
 api-key: # Fill in your CREV API key here
-# specify the prefixes of files and directories to ignore (paths starting with . are always ignored)
-ignore: # ex. [tests, build, dist, readme.md]
+# specify the prefixes of files and directories to ignore (by default common configuration files are ignored)
+ignore: # ex. [tests, readme.md, scripts]
 # specify the extensions of files to include (by default all files are included)
 extensions: # ex. [.go, .py, .js]
 `)
