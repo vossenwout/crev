@@ -32,7 +32,7 @@ func TestGetAllFilePaths(t *testing.T) {
 		filepath.Join(subDir, "file2.txt"),
 	}
 
-	filePaths, err := files.GetAllFilePaths(rootDir, nil, nil)
+	filePaths, err := files.GetAllFilePaths(rootDir, nil, nil, nil)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -88,7 +88,7 @@ func TestGetAllFilePathsWithPrefixFilter(t *testing.T) {
 		filepath.Join(subDir2, "file3.go"),
 	}
 	// filter out full path prefix subDir1
-	filePaths, err := files.GetAllFilePaths(rootDir, []string{"subdir_1"}, nil)
+	filePaths, err := files.GetAllFilePaths(rootDir, []string{"subdir_1"}, nil, nil)
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
@@ -146,7 +146,7 @@ func TestGetAllFilePathsWithPrefixFilterNestedDir(t *testing.T) {
 		filepath.Join(subDir3, "file2.go"),
 	}
 
-	filePaths, err := files.GetAllFilePaths(rootDir, []string{"."}, nil)
+	filePaths, err := files.GetAllFilePaths(rootDir, []string{"."}, nil, nil)
 
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
@@ -170,7 +170,7 @@ func TestGetAllFilePathsWithPrefixFilterNestedDir(t *testing.T) {
 	}
 }
 
-// Tests the functionality to filter out text extensions.
+// Tests the functionality to include only files with specific extensions.
 func TestGetAllFilePathsWithExtensionFilter(t *testing.T) {
 	rootDir := t.TempDir()
 
@@ -204,7 +204,7 @@ func TestGetAllFilePathsWithExtensionFilter(t *testing.T) {
 		subDir2,
 	}
 
-	filePaths, err := files.GetAllFilePaths(rootDir, nil, []string{".go"})
+	filePaths, err := files.GetAllFilePaths(rootDir, nil, []string{".go"}, nil)
 	if err != nil {
 		t.Fatalf("expected no error, got %v", err)
 	}
@@ -213,6 +213,99 @@ func TestGetAllFilePathsWithExtensionFilter(t *testing.T) {
 		t.Fatalf("expected %d files, got %d", len(expected), len(filePaths))
 	}
 
+	for _, exp := range expected {
+		found := false
+		for _, fp := range filePaths {
+			if fp == exp {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("expected path %s not found in result", exp)
+		}
+	}
+}
+
+// Tests the functionality to exclude files with specific extensions.
+
+func TestGetAllFilePathsWithExtensionFilterExclude(t *testing.T) {
+	rootDir := t.TempDir()
+
+	// Create subdirectories and nested subdirectories
+	subDir1 := filepath.Join(rootDir, "subdir_1")
+	err := os.Mkdir(subDir1, 0755)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	nestedSubDir1 := filepath.Join(subDir1, "nested_subdir_1")
+	err = os.Mkdir(nestedSubDir1, 0755)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	subDir2 := filepath.Join(rootDir, "subdir_2")
+	err = os.Mkdir(subDir2, 0755)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	nestedSubDir2 := filepath.Join(subDir2, "nested_subdir_2")
+	err = os.Mkdir(nestedSubDir2, 0755)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	// Create files in various directories
+	err = os.WriteFile(filepath.Join(rootDir, "file1.go"), []byte("content1"), 0644)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	err = os.WriteFile(filepath.Join(subDir1, "file2.go"), []byte("content2"), 0644)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	err = os.WriteFile(filepath.Join(nestedSubDir1, "file3.go"), []byte("content3"), 0644)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	err = os.WriteFile(filepath.Join(subDir2, "file4.txt"), []byte("content4"), 0644)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	err = os.WriteFile(filepath.Join(nestedSubDir2, "file5.md"), []byte("content5"), 0644)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	err = os.WriteFile(filepath.Join(nestedSubDir2, "file6.txt"), []byte("content6"), 0644)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	// Expected result: exclude .txt files, keep the rest
+	expected := []string{
+		filepath.Join(rootDir, "file1.go"),
+		filepath.Join(subDir1, "file2.go"),
+		filepath.Join(nestedSubDir1, "file3.go"),
+		subDir1,
+		subDir2,
+		nestedSubDir1,
+		nestedSubDir2,
+	}
+
+	// Get all file paths excluding .txt files
+	filePaths, err := files.GetAllFilePaths(rootDir, nil, nil, []string{".txt", ".md"})
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	// Check the number of files found
+	if len(filePaths) != len(expected) {
+		t.Fatalf("expected %d files, got %d", len(expected), len(filePaths))
+	}
+
+	// Verify that each expected file is in the result
 	for _, exp := range expected {
 		found := false
 		for _, fp := range filePaths {

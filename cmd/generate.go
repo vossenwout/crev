@@ -77,11 +77,16 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 
 		// get all file paths from the root directory
 		rootDir := "."
-		prefixesToFilter := viper.GetStringSlice("ignore")
-		// always ignore directories starting with "."
+
+		prefixesToFilter := viper.GetStringSlice("ignore-pre")
 		prefixesToFilter = append(prefixesToFilter, standardPrefixesToFilter...)
-		extensionsToKeep := viper.GetStringSlice("extensions")
-		filePaths, err := files.GetAllFilePaths(rootDir, prefixesToFilter, extensionsToKeep)
+
+		extensionsToIgnore := viper.GetStringSlice("ignore-ext")
+
+		extensionsToKeep := viper.GetStringSlice("include-ext")
+
+		filePaths, err := files.GetAllFilePaths(rootDir, prefixesToFilter,
+			extensionsToKeep, extensionsToIgnore)
 		if err != nil {
 			log.Fatal(err)
 			return
@@ -122,13 +127,19 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 
 func init() {
 	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringSlice("ignore", []string{}, "Comma-separated prefixes of paths to ignore")
-	generateCmd.Flags().StringSlice("extensions", []string{}, "Comma-separated file extensions to include. (default: all files)")
-	err := viper.BindPFlag("ignore", generateCmd.Flags().Lookup("ignore"))
+	// TODO Fix description with defaults
+	generateCmd.Flags().StringSlice("ignore-pre", []string{}, "Comma-separated prefixes of paths to ignore")
+	generateCmd.Flags().StringSlice("ignore-ext", []string{}, "Comma-separated file extensions to ignore")
+	generateCmd.Flags().StringSlice("include-ext", []string{}, "Comma-separated file extensions to include.")
+	err := viper.BindPFlag("ignore-pre", generateCmd.Flags().Lookup("ignore-pre"))
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = viper.BindPFlag("extensions", generateCmd.Flags().Lookup("extensions"))
+	err = viper.BindPFlag("ignore-ext", generateCmd.Flags().Lookup("ignore-ext"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = viper.BindPFlag("include-ext", generateCmd.Flags().Lookup("include-ext"))
 	if err != nil {
 		log.Fatal(err)
 	}

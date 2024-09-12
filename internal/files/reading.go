@@ -11,7 +11,8 @@ import (
 
 // Given a root path returns all the file paths in the root directory
 // and its subdirectories.
-func GetAllFilePaths(root string, prefixesToFilter []string, extensionsToKeep []string) ([]string, error) {
+func GetAllFilePaths(root string, prefixesToFilter []string, extensionsToKeep []string,
+	extensionsToIgnore []string) ([]string, error) {
 	var filePaths []string
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
@@ -27,6 +28,12 @@ func GetAllFilePaths(root string, prefixesToFilter []string, extensionsToKeep []
 				if d.IsDir() {
 					return filepath.SkipDir
 				}
+				return nil
+			}
+		}
+		// Filter out the files that have the extensions in extensionsToFilter.
+		for _, ext := range extensionsToIgnore {
+			if filepath.Ext(path) == ext {
 				return nil
 			}
 		}
