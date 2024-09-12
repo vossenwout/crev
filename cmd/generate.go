@@ -67,6 +67,11 @@ var standardExtensionsToIgnore = []string{
 	".pdf",
 	".svg",
 	".ico",
+	".woff",
+	".woff2",
+	".eot",
+	".ttf",
+	".otf",
 }
 
 // generateCmd represents the generate command
