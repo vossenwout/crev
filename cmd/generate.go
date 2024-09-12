@@ -54,8 +54,9 @@ var standardPrefixesToFilter = []string{
 	"Gemfile",
 	// php
 	"composer",
-	// rust
-	"target",
+	// tailwind
+	"tailwind",
+	"postcss",
 }
 
 // generateCmd represents the generate command
