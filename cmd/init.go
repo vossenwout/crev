@@ -14,9 +14,11 @@ var defaultConfig = []byte(`# Configuration for the crev tool
 # specify your Code AI Review API key (necessary for review command)
 api-key: # Fill in your CREV API key here
 # specify the prefixes of files and directories to ignore (by default common configuration files are ignored)
-ignore: # ex. [tests, readme.md, scripts]
-# specify the extensions of files to include (by default all files are included)
-extensions: # ex. [.go, .py, .js]
+ignore-pre: # ex. [tests, readme.md, scripts]
+# specify the extensions of files to ignore 
+ignore-ext: # ex. [.go, .py, .js]
+# specify the extensions of files to include 
+include-ext: # ex. [.go, .py, .js]
 `)
 
 var initCmd = &cobra.Command{
