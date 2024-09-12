@@ -11,7 +11,7 @@ import (
 	"github.com/vossenwout/crev/internal/formatting"
 )
 
-var standardPrefixesToFilter = []string{
+var standardPrefixesToIgnore = []string{
 	// ignore .git, .idea, .vscode, etc.
 	".",
 	// ignore crev specific files
@@ -59,16 +59,27 @@ var standardPrefixesToFilter = []string{
 	"postcss",
 }
 
+var standardExtensionsToIgnore = []string{
+	".jpeg",
+	".jpg",
+	".png",
+	".gif",
+	".pdf",
+	".svg",
+	".ico",
+}
+
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate a textual representation of your code",
-	Long: `Generates a textual representation of your code starting from the directory you execute
-	this command in. By default files starting with "." are ignored.
+	Long: `Generates a textual representation of your code starting from the directory you execute this command in.
+By default common configuration and setup files (ex. .vscode, .venv, package.lock) are ignored as well as non-text extensions like .jpeg, .png, .pdf. 
 
 Example usage:
 crev generate
-crev generate --ignore=tests,readme.md --extensions=go,py,js
+crev generate --ignore-pre=tests,readme --ignore-ext=.txt 
+crev generate --ignore-pre=tests,readme --include-ext=.go,.py,.js
 `,
 	Args: cobra.NoArgs,
 	Run: func(_ *cobra.Command, _ []string) {
@@ -78,15 +89,16 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 		// get all file paths from the root directory
 		rootDir := "."
 
-		prefixesToFilter := viper.GetStringSlice("ignore-pre")
-		prefixesToFilter = append(prefixesToFilter, standardPrefixesToFilter...)
+		prefixesToIgnore := viper.GetStringSlice("ignore-pre")
+		prefixesToIgnore = append(prefixesToIgnore, standardPrefixesToIgnore...)
 
 		extensionsToIgnore := viper.GetStringSlice("ignore-ext")
+		extensionsToIgnore = append(extensionsToIgnore, standardExtensionsToIgnore...)
 
-		extensionsToKeep := viper.GetStringSlice("include-ext")
+		extensionsToInclude := viper.GetStringSlice("include-ext")
 
-		filePaths, err := files.GetAllFilePaths(rootDir, prefixesToFilter,
-			extensionsToKeep, extensionsToIgnore)
+		filePaths, err := files.GetAllFilePaths(rootDir, prefixesToIgnore,
+			extensionsToInclude, extensionsToIgnore)
 		if err != nil {
 			log.Fatal(err)
 			return
@@ -128,9 +140,9 @@ crev generate --ignore=tests,readme.md --extensions=go,py,js
 func init() {
 	rootCmd.AddCommand(generateCmd)
 	// TODO Fix description with defaults
-	generateCmd.Flags().StringSlice("ignore-pre", []string{}, "Comma-separated prefixes of paths to ignore")
-	generateCmd.Flags().StringSlice("ignore-ext", []string{}, "Comma-separated file extensions to ignore")
-	generateCmd.Flags().StringSlice("include-ext", []string{}, "Comma-separated file extensions to include.")
+	generateCmd.Flags().StringSlice("ignore-pre", []string{}, "Comma-separated prefixes of paths to ignore. Ex \"tests,readme\"")
+	generateCmd.Flags().StringSlice("ignore-ext", []string{}, "Comma-separated file extensions to ignore. Ex \".txt\"")
+	generateCmd.Flags().StringSlice("include-ext", []string{}, "Comma-separated file extensions to include. Ex \".go,.py,.js\"")
 	err := viper.BindPFlag("ignore-pre", generateCmd.Flags().Lookup("ignore-pre"))
 	if err != nil {
 		log.Fatal(err)
