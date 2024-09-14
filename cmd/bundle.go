@@ -19,6 +19,9 @@ var standardPrefixesToIgnore = []string{
 	// ignore go.mod, go.sum, etc.
 	"go",
 	"license",
+	// readme
+	"readme",
+	"README",
 	// poetry
 	"pyproject.toml",
 	"poetry.lock",
@@ -67,19 +70,24 @@ var standardExtensionsToIgnore = []string{
 	".pdf",
 	".svg",
 	".ico",
+	".woff",
+	".woff2",
+	".eot",
+	".ttf",
+	".otf",
 }
 
 // generateCmd represents the generate command
 var generateCmd = &cobra.Command{
-	Use:   "generate",
-	Short: "Generate a textual representation of your code",
-	Long: `Generates a textual representation of your code starting from the directory you execute this command in.
+	Use:   "bundle",
+	Short: "Bundle your project into a single file",
+	Long: `Bundle your project into a single file, starting from the directory you are in.
 By default common configuration and setup files (ex. .vscode, .venv, package.lock) are ignored as well as non-text extensions like .jpeg, .png, .pdf. 
 
 Example usage:
-crev generate
-crev generate --ignore-pre=tests,readme --ignore-ext=.txt 
-crev generate --ignore-pre=tests,readme --include-ext=.go,.py,.js
+crev bundle
+crev bundle --ignore-pre=tests,readme --ignore-ext=.txt 
+crev bundle --ignore-pre=tests,readme --include-ext=.go,.py,.js
 `,
 	Args: cobra.NoArgs,
 	Run: func(_ *cobra.Command, _ []string) {
