@@ -148,9 +148,9 @@ crev bundle --ignore-pre=tests,readme --include-ext=.go,.py,.js
 func init() {
 	rootCmd.AddCommand(generateCmd)
 	// TODO Fix description with defaults
-	generateCmd.Flags().StringSlice("ignore-pre", []string{}, "Comma-separated prefixes of paths to ignore. Ex \"tests,readme\"")
-	generateCmd.Flags().StringSlice("ignore-ext", []string{}, "Comma-separated file extensions to ignore. Ex \".txt\"")
-	generateCmd.Flags().StringSlice("include-ext", []string{}, "Comma-separated file extensions to include. Ex \".go,.py,.js\"")
+	generateCmd.Flags().StringSlice("ignore-pre", []string{}, "Comma-separated prefixes of paths to ignore. Ex tests,readme")
+	generateCmd.Flags().StringSlice("ignore-ext", []string{}, "Comma-separated file extensions to ignore. Ex .txt,.md")
+	generateCmd.Flags().StringSlice("include-ext", []string{}, "Comma-separated file extensions to include. Ex .go,.py,.js")
 	err := viper.BindPFlag("ignore-pre", generateCmd.Flags().Lookup("ignore-pre"))
 	if err != nil {
 		log.Fatal(err)
