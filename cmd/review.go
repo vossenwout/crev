@@ -20,13 +20,13 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		apiKey := viper.GetString("api-key")
+		apiKey := viper.GetString("crev_api_key")
 		if apiKey == "" {
-			log.Fatal(`API key is required for this command. Set the API key under the 'api-key' key in your .crev-config.yaml or provide it as a flag --api-key.`)
+			log.Fatal(`Api key is required for review. Generate yours on: ... and set it as CREV_API_KEY env var or specify it under 'crev_api_key' key in your .crev-config.yaml. For more information see: ...`)
 		}
 		dat, err := os.ReadFile(".crev-project-overview.txt")
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal("Could not find .crev-project-overview.txt. Did you generate it using \"crev bundle\" command?")
 		}
 		review.Review(string(dat), apiKey)
 	},
@@ -34,8 +34,8 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(reviewCmd)
-	reviewCmd.Flags().String("api-key", "", "Your Code AI Review API key ")
-	err := viper.BindPFlag("api-key", reviewCmd.Flags().Lookup("api-key"))
+	reviewCmd.Flags().String("crev_api_key", "", "Your Code AI Review API key ")
+	err := viper.BindPFlag("crev_api_key", reviewCmd.Flags().Lookup("crev_api_key"))
 	if err != nil {
 		log.Fatal(err)
 	}
