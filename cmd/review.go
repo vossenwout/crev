@@ -24,9 +24,9 @@ to quickly create a Cobra application.`,
 		if apiKey == "" {
 			log.Fatal(`Api key is required for review. Generate yours on: ... and set it as CREV_API_KEY env var or specify it under 'crev_api_key' key in your .crev-config.yaml. For more information see: ...`)
 		}
-		dat, err := os.ReadFile(".crev-project.txt")
+		dat, err := os.ReadFile("crev-project.txt")
 		if err != nil {
-			log.Fatal("Could not find .crev-project.txt. Did you forget to run the \"crev bundle\" command?")
+			log.Fatal("Could not find crev-project.txt. Did you forget to run the \"crev bundle\" command?")
 		}
 		review.Review(string(dat), apiKey)
 	},
