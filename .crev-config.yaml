@@ -1,9 +1,0 @@
-# Configuration for the crev tool
-# specify your Code AI Review API key (necessary for review command)
-api-key: # Fill in your CREV API key here
-# specify the prefixes of files and directories to ignore (by default common configuration files are ignored)
-ignore-pre: # ex. [tests, readme.md, scripts]
-# specify the extensions of files to ignore 
-ignore-ext: [.go, .py, .js, .txt]
-# specify the extensions of files to include 
-include-ext: # ex. [.go, .py, .js]
