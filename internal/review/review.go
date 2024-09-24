@@ -18,7 +18,8 @@ type ReviewOutput struct {
 	Review string `json:"review"`
 }
 
-const reviewURL = "http://localhost:8000/review"
+// const reviewURL = "http://localhost:8000/review"
+const reviewURL = "http://127.0.0.1:5001/crev-d61eb/us-central1/reviewCode"
 
 func prepareRequest(codeToReview string, apiKey string) (*http.Request, error) {
 	input := ReviewInput{
@@ -50,7 +51,7 @@ func sendRequest(req *http.Request) (*http.Response, error) {
 		body, _ := io.ReadAll(resp.Body)
 		log.Printf("Error: received status code %d: %s", resp.StatusCode, string(body))
 		if resp.StatusCode == http.StatusUnauthorized {
-			log.Fatalf("Unauthorized: please check your API key.")
+			log.Fatalf("Unauthorized: you have provided an invalid CREV API key.")
 		} else {
 			log.Fatalf("Failed to review code: status code %d", resp.StatusCode)
 		}
