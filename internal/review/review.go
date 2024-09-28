@@ -18,8 +18,7 @@ type ReviewOutput struct {
 	Review string `json:"review"`
 }
 
-// const reviewURL = "http://localhost:8000/review"
-const reviewURL = "http://127.0.0.1:5001/crev-d61eb/us-central1/reviewCode"
+const reviewURL = "https://reviewcode-qcgl4feadq-uc.a.run.app"
 
 func prepareRequest(codeToReview string, apiKey string) (*http.Request, error) {
 	input := ReviewInput{
