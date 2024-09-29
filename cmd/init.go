@@ -13,7 +13,7 @@ import (
 var defaultConfig = []byte(`# Configuration for the crev tool
 
 # specify your CREV API key (necessary for review command) ! this overwrites the value you specify in the environment variable
-crev_api_key: # ex. csk_8e796a8f6fdb15f0902eee0d4138b9d5975e244e6cc61ef302feaf37af24c7cb
+crev_api_key: # ex. csk_8e796a8f6fdb15f0902eee0d4138b9d5975e244e6cc61ef502feaf37af24c7cb
 # specify the prefixes of files and directories to ignore (by default common configuration files are ignored)
 ignore-pre: # ex. [tests, readme.md, scripts]
 # specify the extensions of files to ignore 
