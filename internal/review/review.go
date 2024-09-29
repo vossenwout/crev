@@ -64,7 +64,7 @@ func saveReviewToFile(output ReviewOutput) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("Saved review to crev-review.md")
+	log.Printf("Successfully saved code review to crev-review.md")
 	return nil
 }
 
