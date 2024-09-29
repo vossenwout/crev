@@ -69,7 +69,7 @@ func saveReviewToFile(output ReviewOutput) error {
 }
 
 func Review(codeToReview string, apiKey string) {
-	log.Printf("Sending code for review...")
+	log.Printf("Reviewing code please wait...")
 
 	// Prepare the request to review the code
 	req, err := prepareRequest(codeToReview, apiKey)
