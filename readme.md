@@ -1,35 +1,41 @@
-# CREV (Code REView AI)
-CLI tool to review code using AI.
+# Crev CLI
+
+`crev` is a command-line tool which allows you to easily bundle your codebase into a single file and get AI code reviews. For more information visit the [website](https://crevcli.com/).
+
+## Features
+
+- Bundle your codebase into a single .txt file.
+- Get AI code reviews on your bundled code.
+- Cross-platform support (Linux, macOS, Windows).
+- Customizable (ignore / include specific files, directories, etc).
+- Written in Go.
+
+## Installation / Documentation
+
+For installation instructions and documentation, go to the [official docs](https://crevcli.com/docs).
+
+## Important Commands
+
+* **Bundle your codebase**:
+
+   ```bash
+   crev bundle
+   ```
+
+* **Get an ai code review of this bundle (saved locally as a .md file)**:
+
+   ```bash
+   crev review
+   ```
+
+For full details on usage and configuration, visit the [official docs](https://crevcli.com/docs).
 
 
-## Installation
+## Contributing
 
+We welcome contributions!
 
-Brew (MacOS / Linux)
-```bash
-brew install vossenwout/crev/crev
-```
-Scoop (Windows)
-```bash
-scoop bucket add crev https://github.com/vossenwout/scoop-crev
-```
-```bash
-scoop install crev
-```
-Linux/MacOS binaries
-```bash
-sudo curl -L https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.sh | bash
-```
-Windows binaries (Run as Administrator in powershell)
-```bash
-Invoke-Expression (Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/vossenwout/crev/feature/add-install-scripts/scripts/install.ps1').Content
-```
+## Contact
 
-
-
-## Releasing
-Push a new tag to the repository.
-```bash
-git tag v0.0.1
-git push origin v0.0.1
-```
+For any questions, reach out to me:
+vossen.w@hotmail.com
