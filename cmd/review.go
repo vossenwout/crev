@@ -12,17 +12,15 @@ import (
 // reviewCmd represents the review command
 var reviewCmd = &cobra.Command{
 	Use:   "review",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Let an AI review your crev-project.txt",
+	Long: `Let an AI review the crev-project.txt you generated with the crev bundle command. 
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+This command requires a CREV_API_KEY to be set as an environment variable or in your .crev-config.yaml.
+You can generate an CREV_API_KEY on the crev website. For more information see: https://crevcli.com/docs`,
 	Run: func(cmd *cobra.Command, args []string) {
 		apiKey := viper.GetString("crev_api_key")
 		if apiKey == "" {
-			log.Fatal(`Api key is required for review. Generate yours on: ... and set it as CREV_API_KEY env var or specify it under 'crev_api_key' key in your .crev-config.yaml. For more information see: ...`)
+			log.Fatal(`Api key is required for review. Get yours on: https://crevcli.com/api-key and set it as CREV_API_KEY env var or specify it under 'crev_api_key' key in your .crev-config.yaml. For more information see: https://crevcli.com/docs`)
 		}
 		dat, err := os.ReadFile("crev-project.txt")
 		if err != nil {

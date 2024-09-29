@@ -15,8 +15,7 @@ var rootCmd = &cobra.Command{
 	Use:     "crev",
 	Version: Version,
 	Short:   "Initialize",
-	Long: `Allows you to generate a textual representation of 
-your code and let it be reviewed by an AI.
+	Long: `Allows you to bundle your codebase and let it be reviewed by an AI. For more information see: https://crevcli.com/docs
 `,
 }
 

@@ -84,6 +84,8 @@ var generateCmd = &cobra.Command{
 	Long: `Bundle your project into a single file, starting from the directory you are in.
 By default common configuration and setup files (ex. .vscode, .venv, package.lock) are ignored as well as non-text extensions like .jpeg, .png, .pdf. 
 
+For more information see: https://crevcli.com/docs
+
 Example usage:
 crev bundle
 crev bundle --ignore-pre=tests,readme --ignore-ext=.txt 
