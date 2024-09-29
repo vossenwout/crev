@@ -1,6 +1,6 @@
 # Crev CLI
 
-`crev` is a command-line tool which allows you to easily bundle your codebase into a single file and get AI code reviews. For more information visit the [website](https://crevcli.com/).
+`crev` is a command-line tool which allows you to easily bundle your codebase into a single file and get AI code reviews. `crev` helps you improve your code quality and catch bugs early right from your cli. For more information visit the [website](https://crevcli.com/).
 
 ## Features
 
