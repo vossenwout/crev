@@ -16,7 +16,7 @@ For installation instructions and documentation, go to the [official docs](https
 
 ## Important Commands
 
-* **Bundle your codebase**:
+* **Bundle your codebase (saved locally as a .txt file)**:
 
    ```bash
    crev bundle
