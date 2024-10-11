@@ -16,7 +16,7 @@ var reviewCmd = &cobra.Command{
 	Long: `Let an AI review the crev-project.txt you generated with the crev bundle command. 
 
 This command requires a CREV_API_KEY to be set as an environment variable or in your .crev-config.yaml.
-You can generate an CREV_API_KEY on the crev website. For more information see: https://crevcli.com/docs`,
+You can generate a CREV_API_KEY on the crev website. For more information see: https://crevcli.com/docs`,
 	Run: func(cmd *cobra.Command, args []string) {
 		apiKey := viper.GetString("crev_api_key")
 		if apiKey == "" {
